@@ -1,0 +1,153 @@
+{% include './includes/header.html' %}
+{% load static %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .bg-side-bar{
+
+        background : rgb(153, 194, 255);
+
+    }
+
+    .form-section{
+
+        border:1px solid rgb(0,0,0,0.2);
+        border-radius:4px;
+        padding:15px;
+
+    }
+
+</style>
+
+<br>
+<div class="container">
+    <div class="row">
+        {% include './includes/user-sidebar.html' %}
+        <div class="col-md-8 form-section contact-form">
+            <form id="contact" method="post" class="form" role="form">
+                <div class="row">
+                    <div class="col-xs-6 col-md-3 form-group">
+                        Type of Property: <br>
+                        <select class="form-control" id="propertytype" name="propertytype" required autofocus>
+                            <option value="any">Any</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="condo">Condo/Townhouse</option>
+                            <option value="farm">Farm</option>
+                            <option value="land">Land</option>
+                            <option value="singlefamily">Single Family House</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-6 col-md-3 form-group">
+                        Status <br>
+                        <select class="form-control" id="status" name="status" required autofocus>
+                            <option value="any">Any</option>
+                            <option value="zero">0</option>
+                            <option value="featured">Featured</option>
+                            <option value="forrent">For Rent</option>
+                            <option value="forsale">For Sale</option>
+                            <option value="leased">Leased</option>
+                            <option value="newaddition">New Addition</option>
+                            <option value="openhouse">Open House</option>
+                            <option value="pending">Pending</option>
+                            <option value="reduced">Reduced</option>
+                            <option value="rental">Rental</option>
+                            <option value="sold">Sold</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-6 col-md-3 form-group">
+                        Beds <br>
+                        <input class="form-control" id="beds" name="beds" placeholder="Beds" type="text" required autofocus />
+                    </div>
+                    <div class="col-xs-6 col-md-3 form-group">
+                        Baths <br>
+                        <input class="form-control" id="baths" name="baths" placeholder="Baths" type="text" required autofocus />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6 col-md-3 form-group">
+                        Price from $ <br>
+                        <input class="form-control" id="pricefrom" name="pricefrom" placeholder="Price From" type="text" required autofocus />
+                    </div>
+                    <div class="col-xs-6 col-md-3 form-group">
+                        Price to $ <br>
+                        <input class="form-control" id="priceto" name="priceto" placeholder="price to" type="text" required />
+                    </div>
+                    <div class="col-xs-6 col-md-3 form-group">
+                        City <br>
+                        <select class="form-control" id="city" name="city" required autofocus>
+                            <option value="all">All Cities</option>
+                            <option value="doral">Doral</option>
+                            <option value="miami">Miami</option>
+                            <option value="pembroke">Pembroke Pines</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-6 col-md-3 form-group">
+                        State <br>
+                        <select class="form-control" id="state" name="state" required autofocus>
+                            <option value="all">All States</option>
+                            <option value="florida">Florida</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-6 col-md-3 form-group">
+                        Zipcode <br>
+                        <input class="form-control" id="zipcode" name="zipcode" placeholder="zipcode" type="text" required autofocus />
+                    </div>
+                    <div class="col-xs-6 col-md-3 form-group"><br>
+                        <button class="btn btn-primary pull-left" type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+            <hr>
+            <h1>Manage your alerts</h1>
+            <p>Here you can turn saved alerts on/off or remove them completely.</p><br>
+            <br>
+
+            <div class="row">
+                <div class="col-xs-6 col-md-6">
+                    <h5>Query</h5>
+                </div>
+                <div class="col-xs-6 col-md-2">
+                    <h5>Date Created</h5>
+                </div>
+                <div class="col-xs-6 col-md-2">
+                    <h5>Email Settings</h5>
+                </div>
+                <div class="col-xs-6 col-md-2">
+                    <h5>Delete</h5>
+                </div>
+            </div>
+            <hr>
+            <br>
+
+            <form action="" method="POST" class="form">
+                <div class="row">
+                    <div class="col-xs-6 col-md-6 form-group">
+                        <label for="query">New addition, Apartment, 3 beds, 3 baths, $150,000, $250,000,</label>
+                    </div>
+                    <div class="col-xs-6 col-md-2 form-group">
+                        <label for="date">2020-08-26</label>
+                    </div>
+                    <div class="col-xs-6 col-md-2 form-group">
+                        <select class="form-control" name="emailSetting" id="emailSetting" autofocus>
+                            <option value="on">ON</option>
+                            <option value="off">OFF</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-6 col-md-2 form-group">
+                        <button class="btn btn-primary pull-left" type="submit"><i class="fa fa-trash-o"></i></button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

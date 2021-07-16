@@ -1,0 +1,291 @@
+{% include "./includes/sidebar.html" %}
+{% load static %}
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDDaFOwKmGB9Aj8Xzh8Mn3279WumZYfj8&callback=initAutocomplete&libraries=places&v=weekly"
+        defer
+></script>
+
+<style>
+    #map {
+        height: 500px;
+
+      }
+        #description {
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+      }
+
+      #infowindow-content .title {
+        font-weight: bold;
+      }
+
+      #infowindow-content {
+        display: none;
+      }
+
+      #map #infowindow-content {
+        display: inline;
+      }
+
+      .pac-card {
+        margin: 10px 10px 0 0;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        background-color: #fff;
+        font-family: Roboto;
+      }
+
+      #pac-container {
+        padding-bottom: 12px;
+        margin-right: 12px;
+      }
+
+      .pac-controls {
+        display: inline-block;
+        padding: 5px 11px;
+      }
+
+      .pac-controls label {
+        font-family: Roboto;
+        font-size: 13px;
+        font-weight: 300;
+      }
+
+      #pac-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+      }
+
+      #pac-input:focus {
+        border-color: #4d90fe;
+      }
+
+      #title {
+        color: #fff;
+        background-color: #4d90fe;
+        font-size: 25px;
+        font-weight: 500;
+        padding: 6px 12px;
+      }
+
+      #target {
+        width: 345px;
+      }
+    </style>
+<script>
+      "use strict";
+
+      // This example adds a search box to a map, using the Google Place Autocomplete
+      // feature. People can enter geographical searches. The search box will return a
+      // pick list containing a mix of places and predicted search terms.
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+      var map;
+      function initAutocomplete() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: {
+            lat: 42.3601,
+            lng: -71.0589
+          },
+          zoom: 13,
+          mapTypeId: "roadmap"
+        }); // Create the search box and link it to the UI element.
+
+        const input = document.getElementById("pac-input");
+        const searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input); // Bias the SearchBox results towards current map's viewport.
+
+        map.addListener('center_changed', function() {
+
+            $('#latitude').val(map.getCenter().lat());
+            $('#longitude').val(map.getCenter().lng());
+
+
+            });
+
+        map.addListener("bounds_changed", () => {
+          searchBox.setBounds(map.getBounds());
+        });
+        let markers = []; // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+
+        searchBox.addListener("places_changed", () => {
+          const places = searchBox.getPlaces();
+
+          if (places.length == 0) {
+            return;
+          } // Clear out the old markers.
+
+          markers.forEach(marker => {
+            marker.setMap(null);
+          });
+          markers = []; // For each place, get the icon, name and location.
+
+          const bounds = new google.maps.LatLngBounds();
+          places.forEach(place => {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+
+            const icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            }; // Create a marker for each place.
+
+            markers.push(
+              new google.maps.Marker({
+                map,
+                icon,
+                title: place.name,
+                position: place.geometry.location
+              })
+            );
+
+            if (place.geometry.viewport) {
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+            }
+          });
+          map.fitBounds(bounds);
+        });
+      }
+    </script>
+
+
+
+<div id="layoutSidenav_content">
+    <main>
+
+        <div class="container-fluid">
+            <h1 class="mt-4">Property Management</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Add Property</li>
+            </ol>
+
+            <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-home"></i>Enter Property Details</div>
+                <div class="card-body">
+
+                    <form method = "POST" action = "" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group"><label class="small mb-1" for="inputfirst_name">Type</label><input class="form-control py-4" name = "type" id="inputfirst_name" type="text" placeholder="Enter Property Type" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="inputlast_name">Status</label><input class="form-control py-4" name = "status" id="inputlast_name" type="text" placeholder="Enter Property Status" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="inputDOB">No. Of Beds</label><input class="form-control py-4" name = "no_of_beds" id="inputDOB" type="number" placeholder="Enter No. Of Beds" min="0" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="inputEmailAddress">No. Of. Bathrooms</label><input class="form-control py-4" name = "no_of_bathrooms" id="inputEmailAddress" type="number" min="0" placeholder="Enter No. Of Bathrooms" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="pets">No. Of. Pets</label><input class="form-control py-4" name = "pets" id="pets" type="number" min="0" placeholder="Enter No. Of Pets" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="website">Parking Area</label><input class="form-control py-4" name = "parking_area" id="website" type="text" placeholder="Enter Parking Area" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="area">Area</label><input class="form-control py-4" name = "area" id="area" type="text" placeholder="Enter Area" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="facebook">Lot Size</label><input class="form-control py-4" name = "lot_size" id="facebook" type="text" placeholder="Enter Lot Size" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="twitter">Property Id</label><input class="form-control py-4" name = "property_id" id="twitter" type="text" placeholder="Enter Property Id" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Title</label><input class="form-control py-4" name = "title" id="instagram" type="text" placeholder="Enter Title" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Price</label><input class="form-control py-4" name = "price" id="price" type="text" placeholder="Enter price" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Price Per Area</label><input class="form-control py-4" name = "price_per_area" id="price_per_area" type="text" placeholder="Enter price per area" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Community</label><input class="form-control py-4" name = "community" id="community" type="text" placeholder="Enter Community" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Description</label><textarea class="form-control" rows="5" name = "description" id="description"  placeholder="Enter Description" required ></textarea></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">City</label><input class="form-control py-4" name = "city" id="city" type="text" placeholder="Enter City" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">State</label><input class="form-control py-4" name = "state" id="state" type="text" placeholder="Enter State" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Location</label><input class="form-control py-4" name = "location" id="location" type="text" placeholder="Enter Location" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Add Photos</label><input class="form-control" name = "photo"  type="file" multiple required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Agent</label><select class="form-control" name = "agent">
+
+                                {% for a in agents %}
+                                    <option value="{{a.id}}">{{a.username}}</option>
+                                {% endfor %}
+
+                        </select></div>
+                        <label class="small mb-1">Geo Location</label><input
+                            id="pac-input"
+                            class="controls"
+                            type="text"
+                            placeholder="Search Box"
+                    />
+
+                        <div id="map"></div>
+
+                        <input type="hidden" name="latitude" id="latitude">
+                        <input type="hidden" name="longitude" id="longitude">
+                        <div class="form-group d-flex align-items-center mt-4 mb-0"><button class="btn btn-success">Add Property</button></div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Invexterra 2020</div>
+
+            </div>
+        </div>
+    </footer>
+</div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Submitted Successfully</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Your response has been submitted successfully!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/js/scripts.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'dist/assets/demo/chart-bar-demo.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/datatables-demo.js' %}"></script>
+
+{% if message %}
+<script>
+
+
+   $("#exampleModalCenter").modal('show');
+
+
+</script>
+
+{% endif %}
+
+
+</body>
+</html>

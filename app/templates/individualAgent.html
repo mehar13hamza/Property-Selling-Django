@@ -1,0 +1,143 @@
+{% include './includes/header.html' %}
+{% load static %}
+
+<style>
+        .card img {
+            margin: 0px;
+            align-self: center;
+        }
+        .icon{
+            width: 50px;
+            height: 50px;
+            border-radius: 50px;
+        }
+</style>
+
+
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-xs-12 col-sm-12" style="padding: 10px;">
+                <div class="border">
+                    <img src="{{agent.photo.url}}" style="padding: 10px;"  width="100%" height="350px" alt="">
+                    <h3>{{agent.username}}</h3>
+                    <h5>{{agent.company}}</h5>
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><i class="fa fa-phone"></i></td>
+                            <td>{{agent.phone}}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-building"></i></td>
+                            <td>{{agent.address}}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-envelope"></i></td>
+                            <td>{{agent.email}}</td>
+                        </tr>
+                        <tr>
+                            <td><i class="fa fa-globe"></i></td>
+                            <td>{{agent.website}}</td>
+                        </tr>
+                        <tr>
+                            <td><h5>Agent</h5></td>
+                            <td>{{agent.agentId}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a href="#" class="btn" style="color: white; background: green;">
+                        <i class="fa fa-whatsapp"></i> Contact Me!
+                    </a>
+                    <br><br>
+                    <h5>Social</h5>
+                    <a href="{{agent.twitter}}"><i class="fa fa-twitter border text-dark" style="font-size: 30px;"></i>&nbsp;&nbsp;&nbsp;</a><a href="{{agent.facebook}}"><i class="fa fa-facebook border text-dark" style="font-size: 30px;"></i>&nbsp;&nbsp;&nbsp;</a><a href="{{agent.instagram}}"><i class="fa fa-instagram border text-dark" style="font-size: 30px;"> </i> </a>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12 col-xs-12">
+                <form action="" method="POST" class="form">
+                    <div class="row bg-light" style="padding: 10px 10px 5px 10px;">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <input class="form-control" id="subject" name="subject" placeholder="subject" type="text" required autofocus />
+                        </div>
+                    </div>
+                </form>
+                <!-- property cards starts here -->
+                <section class="section section-icons grey lighten-4 center" style="background-color: #f9f9fb;">
+                    <div class="container">
+                        <div class="row" >
+
+                            {% for p in property %}
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="card bg-light">
+                                        <!-- <img src="{% static 'images/card-1.jpg' %}" style="width: 100%; height: 300px;" alt=""> -->
+                                        <div class="contain">
+                                            <img src="{{p.photo.url}}" alt="Snow" style="width:100%;  height: 300px;">
+                                            <div class="bottom-left text-white dark-bg"><i class="fa fa-home"></i></div>
+                                            <div class="top-right text-white dark-bg">{{p.status}}</div>
+                                            <div class="bottom-right text-white"><i class="fa fa-image transp-bg"></i>   <i class="fa fa-heart transp-bg"></i></div>
+                                        </div>
+                                        <h4>{{p.title}}</h4>
+                                        <h6>{{p.location}} {{p.city}} {{p.state}}</h6>
+                                        <h3 class="bg-primary text-white">$ {{p.price}}</h3>
+                                        <p>{{p.description}}</p>
+                                        <table class="table">
+                                            <tbody>
+                                            <tr>
+                                                <td>Bed</td>
+                                                <td>{{p.no_of_beds}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Bath</td>
+                                                <td>{{p.no_of_bathrooms}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pet</td>
+                                                <td>{{p.pets}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Parking</td>
+                                                <td>{{p.parking_area}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Area</td>
+                                                <td>{{p.area}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Price PerArea</td>
+                                                <td>$ {{p.price_per_area}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Lot Size</td>
+                                                <td>{{p.lot_size}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Community</td>
+                                                <td>{{p.community}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Type</td>
+                                                <td>{{p.type}}</td>
+                                            </tr>
+                                            <td><i class="fa fa-calendar"></i></td>
+                                            <td>{{p.created_at}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{agent.username}}</td>
+                                                <td><img src="{{agent.photo.url}}" class="icon" alt=""></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

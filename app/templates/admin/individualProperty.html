@@ -1,0 +1,321 @@
+{% include "./includes/sidebar.html" %}
+{% load static %}
+
+<style>
+
+    .post
+{
+    background-color: #FFF;
+    overflow: hidden;
+    box-shadow: 0 0 1px #CCC;
+    margin: 0 auto;
+    text-align:center
+}
+
+.post .content
+{
+    padding: 15px;
+}
+.post .author
+{
+    font-size: 11px;
+    color: #737373;
+    padding: 25px 30px 20px;
+}
+
+.post .post-img-content img
+{
+    width:100%;
+}
+
+.post .post-title b
+{
+    background-color: rgba(51, 51, 51, 0.58);
+    display: inline-block;
+    margin-bottom: 5px;
+    color: #FFF;
+    padding: 10px 15px;
+    margin-top: 5px;
+}
+
+.property-content{
+
+    margin-top:5px;
+    border: 1px solid rgb(0,0,0,0.1);
+    border-radius:1px;
+    padding:10px;
+
+
+
+
+}
+
+  #map {
+        height: 500px;
+
+      }
+
+
+</style>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDDaFOwKmGB9Aj8Xzh8Mn3279WumZYfj8&callback=initAutocomplete&libraries=places&v=weekly"
+        defer
+></script>
+{{ property.latitude|json_script:"lat" }}
+{{ property.longitude|json_script:"lng" }}
+
+<script>
+      "use strict";
+
+      // This example adds a search box to a map, using the Google Place Autocomplete
+      // feature. People can enter geographical searches. The search box will return a
+      // pick list containing a mix of places and predicted search terms.
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+      const latitude = parseFloat(JSON.parse(document.getElementById('lat').textContent));
+      const longitude = parseFloat(JSON.parse(document.getElementById('lng').textContent));
+
+      var map;
+      function initAutocomplete() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: {
+            lat: latitude,
+            lng: longitude
+          },
+          zoom: 13,
+          mapTypeId: "roadmap"
+        }); // Create the search box and link it to the UI element.
+        }
+    </script>
+
+
+
+<div id="layoutSidenav_content">
+    <main>
+
+        <div class="container-fluid">
+            <h1 class="mt-4">Property Management</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Property</li>
+            </ol>
+
+            <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-user mr-1"></i>Property</div>
+                <div class="card-body">
+                    <div class="post">
+                        <div class="post-img-content">
+                            <h2>{{property.title}}</h2>
+                            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators">
+                                    {% for p in property_images %}
+                                    <li data-target="#carouselExampleIndicators" data-slide-to="{{forloop.counter}}"></li>
+                                    {% endfor %}
+                                </ol>
+                                <div class="carousel-inner">
+                                    {% for p in property_images %}
+                                        {% if forloop.counter == 1 %}
+                                            <div class="carousel-item active">
+                                                <img class="d-block w-100" src="{{p.photo.url}}" alt="First slide">
+                                            </div>
+                                        {% else %}
+                                            <div class="carousel-item">
+                                                <img class="d-block w-100" src="{{p.photo.url}}" alt="First slide">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                </a>
+                                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="author">
+                                By <b>{{property.agent.username}}</b> |
+                                {{property.agent.phone}}
+                            </div>
+                            <div class="property-content">
+                                <table class="table" style="width:80%; margin:0 auto;">
+                                    <tbody>
+
+                                        <tr>
+                                            <td align="left">
+                                                <strong>Bed</strong>
+                                            </td>
+                                            <td align="right">
+                                                {{property.no_of_beds}}
+                                            </td>
+
+
+                                        </tr>
+
+
+                                        <tr>
+                                            <td align="left">
+                                                <strong>Bath</strong>
+                                            </td>
+                                            <td align="right">
+                                                {{property.no_of_bathrooms}}
+                                            </td>
+
+
+                                        </tr>
+
+
+                                        <tr>
+                                            <td align="left">
+                                                <strong>Pet</strong>
+                                            </td>
+                                            <td align="right">
+                                                {{property.pets}}
+                                            </td>
+
+
+                                        </tr>
+
+
+                                        <tr>
+                                            <td align="left">
+                                                <strong>Parking</strong>
+                                            </td>
+                                            <td align="right">
+                                                {{property.parking_area}}
+                                            </td>
+
+
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">
+                                                <strong>Area</strong>
+                                            </td>
+                                            <td align="right">
+                                                {{property.area}}
+                                            </td>
+
+
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">
+                                                <strong>Lot Size</strong>
+                                            </td>
+                                            <td align="right">
+                                                {{property.lot_size}}
+                                            </td>
+
+
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">
+                                                <strong>Type</strong>
+                                            </td>
+                                            <td align="right">
+                                                {{property.type}}
+                                            </td>
+
+
+                                        </tr>
+
+                                        <tr>
+                                            <td align="left">
+                                                <strong>Property Id</strong>
+                                            </td>
+                                            <td align="right">
+                                                {{property.property_id}}
+                                            </td>
+
+
+                                        </tr>
+
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <div class="property-content">
+
+                                {{property.description}}
+                                <hr>
+                            </div>
+                            <br>
+                            <h2>Property Geo Location</h2>
+                            <div class="property-content">
+
+                                <div id="map"></div>
+                                <hr>
+                            </div>
+                            <div>
+                                <a href="{% url 'allProperty' %}" class="btn btn-primary btn-sm">Go back</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Invexterra 2020</div>
+
+            </div>
+        </div>
+    </footer>
+</div>
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Submitted Successfully</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Your response has been submitted successfully!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/js/scripts.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'dist/assets/demo/chart-bar-demo.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/datatables-demo.js' %}"></script>
+
+{% if message %}
+<script>
+
+
+   $("#exampleModalCenter").modal('show');
+
+
+</script>
+
+{% endif %}
+
+
+</body>
+</html>

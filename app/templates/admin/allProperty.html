@@ -1,0 +1,147 @@
+{% include "./includes/sidebar.html" %}
+{% load static %}
+
+<div id="layoutSidenav_content">
+    <main>
+
+        <div class="container-fluid">
+            <h1 class="mt-4">Property Management</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">All Properties</li>
+            </ol>
+
+            <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-user mr-1"></i>All Properties</div>
+                <div class="card-body">
+
+                    <div class="cotainer" style="margin: 50px 30px 0px 30px;">
+
+                        <div class="row detail" style="border: 1px solid gray; border-radius: 5px;">
+                            {% for property in properties %}
+                            <div class="col-xs-12 col-md-4">
+                                <!-- <img src="https://s3-ap-southeast-2.amazonaws.com/geg-sia-webapp2/library/assets/images/GUG%2020122.jpg" style="width: 100%; height: 300px;" alt=""> -->
+                                <div class="contain">
+                                    <a href="{% url 'individualProperty' id=property.id %}"><img src="{{property.photo.url}}" style="width:100%;  height: 200px; margin-top:20px;"></a>
+                                    <div class="bottom-left text-white dark-bg"><i class="fa fa-home"></i></div>
+                                    <div class="top-right text-white dark-bg">{{property.type}}</div>
+                                    <div class="bottom-right text-white"><i class="fa fa-image transp-bg"></i>   <i class="fa fa-heart transp-bg"></i></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-8">
+                                <div class="detail-box" style="margin-top:20px;">
+                                    <h4 class="text-dark"><a href="#">{{property.status}}</a>
+                                        <button class="float-right btn btn-primary">{{property.price}}$</button>
+                                    </h4>
+                                    <h6>{{property.location}}</h6>
+                                    <!--<p><strong>Bed</strong> 2 <strong>Bath</strong> 2 <strong>Type:</strong> Apartment</p>-->
+                                    <p>{{property.description}}</p>
+                                    <ul>
+                                        <li><strong>Bed: </strong> {{property.no_of_beds}}</li>
+                                        <li><strong>Bath: </strong> {{property.no_of_bathrooms}}</li>
+                                        <li><strong>Type:  </strong> {{property.type}}</li>
+                                    </ul>
+                                </div>
+                                <br><hr>
+                                <div class="row">
+                                    <div class="col-md-1 col-xs-3">
+                                        <img src="../static/images/logo.png" alt="" style="width: 50px; height: 50px; border-radius: 25px;">
+                                    </div>
+                                    <div class="col-md-8 col-xs-9">
+                                        <h6>Agent</h6>
+                                        <h4>{{property.agent.username}}</h4>
+                                    </div>
+                                    <div class = "col-md-3">
+                                        <a href="{% url 'deleteProperty' id=property.id %}" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                        {% if properties.has_other_pages %}
+                        <ul class="pagination">
+                            {% if properties.has_previous %}
+                            <li class = "page-item"><a class = "page-link" href="?page={{ properties.previous_page_number }}">&laquo;</a></li>
+                            {% else %}
+                            <li class = "page-item" class="disabled"><span class = "page-link">&laquo;</span></li>
+                            {% endif %}
+                            {% for i in properties.paginator.page_range %}
+                            {% if properties.number == i %}
+                            <li  class="active page-item"><span class = "page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+                            {% else %}
+                            <li class = "page-item"><a class = "page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if properties.has_next %}
+                            <li class = "page-item"><a class = "page-link" href="?page={{ properties.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                            <li class="disabled page-item"><span class = "page-link">&raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Invexterra 2020</div>
+
+            </div>
+        </div>
+    </footer>
+</div>
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Submitted Successfully</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Your response has been submitted successfully!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/js/scripts.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'dist/assets/demo/chart-bar-demo.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/datatables-demo.js' %}"></script>
+
+{% if message %}
+<script>
+
+
+   $("#exampleModalCenter").modal('show');
+
+
+</script>
+
+{% endif %}
+
+
+</body>
+</html>

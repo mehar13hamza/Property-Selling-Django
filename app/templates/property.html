@@ -1,0 +1,691 @@
+{% include './includes/header.html' %}
+{% load static %}
+
+
+<!------ Include the above in your HEAD tag ---------->
+<style>
+
+
+        .heading{
+
+            text-align:center;
+            color:white;
+            background:rgba(0,0,0,.7);
+            height:100px;
+            padding-top:15px;
+            padding-bottom:15px;
+        }
+
+        .panel{
+            border:2px solid rgb(0,0,0,0.1);
+            border-radius:2px;
+            padding:10px;
+            text-align:justify;
+        }
+        #map {
+        height: 500px;
+
+      }
+
+
+
+    </style>
+
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBDDaFOwKmGB9Aj8Xzh8Mn3279WumZYfj8&callback=initAutocomplete&libraries=places&v=weekly"
+        defer
+></script>
+{{ property.latitude|json_script:"lat" }}
+{{ property.longitude|json_script:"lng" }}
+
+<script>
+      "use strict";
+
+      // This example adds a search box to a map, using the Google Place Autocomplete
+      // feature. People can enter geographical searches. The search box will return a
+      // pick list containing a mix of places and predicted search terms.
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+      const latitude = parseFloat(JSON.parse(document.getElementById('lat').textContent));
+      const longitude = parseFloat(JSON.parse(document.getElementById('lng').textContent));
+
+      var map;
+      function initAutocomplete() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: {
+            lat: latitude,
+            lng: longitude
+          },
+          zoom: 13,
+          mapTypeId: "roadmap"
+        }); // Create the search box and link it to the UI element.
+        }
+    </script>
+
+
+
+
+<div class="heading">
+
+    <h1> Properties</h1>
+
+</div>
+<br>
+<div class="cotainer" style="margin: 50px 30px 0px 30px;">
+    <div class="row">
+        <div class="col-md-12" style="float: right;">
+            <a href="#" class="btn btn-primary" style="float: right;">
+                for {{property.status}}
+            </a>
+        </div>
+    </div>
+    <!-- first row -->
+    <div class="row" style="border: 1px solid whitesmoke;">
+        <div class="col-md-8">
+            <h1>{{property.agent.username}}</h1>
+            <h4>{{property.agent.address}}</h4>
+        </div>
+        <div class="col-md-4" style="text-align: center;">
+            <h1 style="color: #42bbca;">$ {{property.price}}</h1>
+
+        </div>
+    </div>
+
+    <!-- second row with two columns -->
+
+    <div class="row" style="border: 1px solid whitesmoke;">
+        <!-- 8cols -->
+
+        <div class="col-md-8" style="border: 1px solid whitesmoke;">
+            <div class="wrapper">
+                <div class="carousel">
+                    <button type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>
+                    <button type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>
+                    {% for p in property_images %}
+                        {% if forloop.counter == 1 %}
+                            <img id="carousel-{{forloop.counter|add:'-1'}}" class="carousel-img carousel-img-displayed" src="{{p.photo.url}}" alt="Winter" />
+                        {% else %}
+                            <img id="carousel-{{forloop.counter|add:'-1'}}" class="carousel-img carousel-img-noDisplay" src="{{p.photo.url}}"/>
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+        <!-- 4 cols -->
+        <div class="col-md-4" style="border: 1px solid whitesmoke;">
+            <div class="row" style="margin-bottom: 10px;">
+                <div class = "col-md-12"> <h3>Feature Agents</h3> </div>
+                <div class="col-md-6">
+                    <img src="{{property.agent.photo.url}}" style="width: 100%;" height="115px" alt="">
+                </div>
+                <div class="col-md-6">
+                    <h4>{{property.agent.username}}</h4>
+                    <h4><i class="fa fa-phone"></i> {{property.agent.phone}}</h4>
+                    <a href="#" class="btn" style="color: white; background: green;">
+                        <i class="fa fa-whatsapp"></i> Contact Me!
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <form action="" method="POST" class="form">
+                        <select class="form-control" name="agentaccess" id="agentaccess">
+                            <option value="tellmemore">Tell me more about this listing</option>
+                            <option value="requestShowing">Request a showing</option>
+                        </select><br>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Name"><br>
+                        <textarea class="form-control" id="message" name="message" placeholder="Message" rows="5"></textarea><br>
+                        <button class="btn btn-primary pull-left " type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top: 30px; color: gray;">
+        <div class="col-md-8" style="border-radius: 5px; border: 1px solid whitesmoke;  padding: 10px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>bed</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.no_of_beds}}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Baths</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.no_of_bathrooms}}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Pets</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.pets}}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Parking</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.parking_area}}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Area</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.area}}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Price Per Area</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.price_per_area}}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Lot Size</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.lot_size}}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Community</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.community}}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Type</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.type}}</h6>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Property ID #</h6>
+                </div>
+                <div class="col-md-6">
+                    <h6 style="float: right;">{{property.property_id}}</h6>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12" style="width: 100%;">
+                    <nav class="navbar navbar-expand-sm bg-primary navbar-dark" style="width: 100%; padding-left: 50px; text-align: center; align-content: center; justify-items: center;">
+                        <!-- Links -->
+                        <ul class="navbar-nav">
+                            <li class="nav-item" style="border-right: 1px solid white; width: 100px;">
+                                <a class="nav-link" href="#">Review</a>
+                            </li>
+                            <li class="nav-item" style="border-right: 1px solid white; width: 100px;">
+                                <a class="nav-link" href="#feature">Features</a>
+                            </li>
+                            <li class="nav-item" style="border-right: 1px solid white; width: 100px;">
+                                <a class="nav-link" href="#attachments">Attchments</a>
+                            </li>
+                            <li class="nav-item" style="border-right: 1px solid white; width: 100px;">
+                                <a class="nav-link" href="#nearby">Nearby</a>
+                            </li>
+                            <li class="nav-item" style="border-right: 1px solid white; width: 100px;">
+                                <a class="nav-link" href="#location">Location</a>
+                            </li>
+                            <li class="nav-item" style=" width: 100px;">
+                                <a class="nav-link" href="#contact">Contact</a>
+                            </li>
+                        </ul>
+                    </nav>
+                    <br>
+                    <p style="text-align: justify;">{{property.description}}</p>
+                    <br>
+<!--                    <h2 id="feature">Property Features</h2>-->
+<!--                    <hr>-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-6">-->
+<!--                            <i class="fa fa-check primary" style="color: #1d5f6f;"></i> a+ Schools<br>-->
+<!--                            <i class="fa fa-check primary" style="color: #1d5f6f;"></i> Aquatic Park<br>-->
+<!--                            <i class="fa fa-check primary" style="color: #1d5f6f;"></i> basketball court<br>-->
+<!--                            <i class="fa fa-check primary" style="color: #1d5f6f;"></i> billiard room<br>-->
+<!--                            <i class="fa fa-check primary" style="color: #1d5f6f;"></i> business center and grand ball room<br>-->
+<!--                            <i class="fa fa-check primary" style="color: #1d5f6f;"></i> Playground<br>-->
+<!--                        </div>-->
+<!--                        <div class="col-md-6">-->
+<!--                            <i class="fa fa-check" style="color: #1d5f6f;"></i> Pools<br>-->
+<!--                            <i class="fa fa-check" style="color: #1d5f6f;"></i> Private gated community with Clubhouse<br>-->
+<!--                            <i class="fa fa-check" style="color: #1d5f6f;"></i> Rec. Fitness Center<br>-->
+<!--                            <i class="fa fa-check" style="color: #1d5f6f;"></i> Soccer field<br>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <br>-->
+<!--                    <h2 id="attachments">Attachments</h2>-->
+<!--                    <hr>-->
+<!--                    <h5>Uploaded file link here</h5>-->
+<!--                    <p>An iframe with default borders:</p>-->
+<!--                    <iframe src="http://127.0.0.1:8000/contact/" width="100%" height="300">-->
+<!--                    </iframe>-->
+<!--                    <br>-->
+<!--                    <h2 id="location">Location</h2>-->
+<!--                    <hr>-->
+<!--                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13611.32185856294!2d74.39283460378648!3d31.473849512853327!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xbc45585e1667e7c6!2sJay%20Bee&#39;s%20Icecream!5e0!3m2!1sen!2s!4v1598617925943!5m2!1sen!2s" width="730" height="400" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>-->
+                    <br><br>
+                    <h2 id="nearby">What's Nearby</h2>
+                    <hr>
+                    <div class="row">
+                        <table>
+                            <tr>
+                                <td><h4><i class="fa fa-ambulance"></i><b> Hospitals</b></h4></td>
+                            </tr>
+
+                            {% for b in business_data.0.businesses %}
+                            <tr>
+                                <td style="padding-right: 150px; padding-left: 10px;"><a href="{{b.url}}"> {{b.name}} </a> ({{b.distance}} mi)</td>
+
+
+                                <td style="padding-right: 50px;">
+                                    {% if b.rating == 1.0 %}
+                                    <img src="{% static 'images/1.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 1.5 %}
+                                    <img src="{% static 'images/1.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.0 %}
+                                    <img src="{% static 'images/2.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.5 %}
+                                    <img src="{% static 'images/2.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.0 %}
+                                    <img src="{% static 'images/3.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.5 %}
+                                    <img src="{% static 'images/3.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.0 %}
+                                    <img src="{% static 'images/4.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.5 %}
+                                    <img src="{% static 'images/4.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 5.0 %}
+                                    <img src="{% static 'images/5.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+
+                                </td>
+
+                                <td>{{b.review_count}} Reviews</td>
+                            </tr>
+                            {% endfor %}
+
+
+                            <tr>
+
+                                <td><br><h4><i class="fa fa-shopping-bag"></i><b> Shopping Malls</b></h4></td>
+                            </tr>
+                            {% for b in business_data.1.businesses %}
+                            <tr>
+                                <td style="padding-right: 150px; padding-left: 10px;"><a href="{{b.url}}"> {{b.name}} </a> ({{b.distance}} mi)</td>
+
+
+                                <td style="padding-right: 50px;">
+                                    {% if b.rating == 1.0 %}
+                                    <img src="{% static 'images/1.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 1.5 %}
+                                    <img src="{% static 'images/1.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.0 %}
+                                    <img src="{% static 'images/2.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.5 %}
+                                    <img src="{% static 'images/2.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.0 %}
+                                    <img src="{% static 'images/3.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.5 %}
+                                    <img src="{% static 'images/3.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.0 %}
+                                    <img src="{% static 'images/4.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.5 %}
+                                    <img src="{% static 'images/4.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 5.0 %}
+                                    <img src="{% static 'images/5.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+
+                                </td>
+
+                                <td>{{b.review_count}} Reviews</td>
+                            </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td><br><h4><i class="fa fa-spoon"></i><b> Restaurants</b></h4></td>
+                            </tr>
+
+                            {% for b in business_data.2.businesses %}
+                            <tr>
+                                <td style="padding-right: 150px; padding-left: 10px;"><a href="{{b.url}}"> {{b.name}} </a> ({{b.distance}} mi)</td>
+
+
+                                <td style="padding-right: 50px;">
+                                    {% if b.rating == 1.0 %}
+                                    <img src="{% static 'images/1.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 1.5 %}
+                                    <img src="{% static 'images/1.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.0 %}
+                                    <img src="{% static 'images/2.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.5 %}
+                                    <img src="{% static 'images/2.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.0 %}
+                                    <img src="{% static 'images/3.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.5 %}
+                                    <img src="{% static 'images/3.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.0 %}
+                                    <img src="{% static 'images/4.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.5 %}
+                                    <img src="{% static 'images/4.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 5.0 %}
+                                    <img src="{% static 'images/5.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+
+                                </td>
+
+                                <td>{{b.review_count}} Reviews</td>
+                            </tr>
+                            {% endfor %}
+
+                            <tr>
+                                <td><br><h4><i class="fa fa-coffee"></i><b> Coffee Shops</b></h4></td>
+                            </tr>
+
+                            {% for b in business_data.3.businesses %}
+                            <tr>
+                                <td style="padding-right: 150px; padding-left: 10px;"><a href="{{b.url}}"> {{b.name}} </a> ({{b.distance}} mi)</td>
+
+
+                                <td style="padding-right: 50px;">
+                                    {% if b.rating == 1.0 %}
+                                    <img src="{% static 'images/1.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 1.5 %}
+                                    <img src="{% static 'images/1.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.0 %}
+                                    <img src="{% static 'images/2.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.5 %}
+                                    <img src="{% static 'images/2.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.0 %}
+                                    <img src="{% static 'images/3.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.5 %}
+                                    <img src="{% static 'images/3.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.0 %}
+                                    <img src="{% static 'images/4.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.5 %}
+                                    <img src="{% static 'images/4.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 5.0 %}
+                                    <img src="{% static 'images/5.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+
+                                </td>
+
+                                <td>{{b.review_count}} Reviews</td>
+                            </tr>
+                            {% endfor %}
+
+
+                            <tr>
+                                <td><br><h4><i class="fa fa-basket"></i><b> Grocery</b></h4></td>
+                            </tr>
+
+                            {% for b in business_data.4.businesses %}
+                            <tr>
+                                <td style="padding-right: 150px; padding-left: 10px;"><a href="{{b.url}}"> {{b.name}} </a> ({{b.distance}} mi)</td>
+
+
+                                <td style="padding-right: 50px;">
+                                    {% if b.rating == 1.0 %}
+                                    <img src="{% static 'images/1.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 1.5 %}
+                                    <img src="{% static 'images/1.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.0 %}
+                                    <img src="{% static 'images/2.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.5 %}
+                                    <img src="{% static 'images/2.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.0 %}
+                                    <img src="{% static 'images/3.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.5 %}
+                                    <img src="{% static 'images/3.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.0 %}
+                                    <img src="{% static 'images/4.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.5 %}
+                                    <img src="{% static 'images/4.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 5.0 %}
+                                    <img src="{% static 'images/5.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+
+                                </td>
+
+                                <td>{{b.review_count}} Reviews</td>
+                            </tr>
+                            {% endfor %}
+
+
+                            <tr>
+                                <td><br><h4><i class="fa fa-spoon"></i><b> Education</b></h4></td>
+                            </tr>
+                            {% for b in business_data.5.businesses %}
+                            <tr>
+                                <td style="padding-right: 150px; padding-left: 10px;"><a href="{{b.url}}"> {{b.name}} </a> ({{b.distance}} mi)</td>
+
+
+                                <td style="padding-right: 50px;">
+                                    {% if b.rating == 1.0 %}
+                                    <img src="{% static 'images/1.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 1.5 %}
+                                    <img src="{% static 'images/1.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.0 %}
+                                    <img src="{% static 'images/2.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 2.5 %}
+                                    <img src="{% static 'images/2.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.0 %}
+                                    <img src="{% static 'images/3.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 3.5 %}
+                                    <img src="{% static 'images/3.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.0 %}
+                                    <img src="{% static 'images/4.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 4.5 %}
+                                    <img src="{% static 'images/4.5.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+                                    {% if b.rating == 5.0 %}
+                                    <img src="{% static 'images/5.0.png' %}" id="rating" alt="">
+                                    {% endif %}
+
+
+                                </td>
+
+                                <td>{{b.review_count}} Reviews</td>
+                            </tr>
+                            {% endfor %}
+
+                        </table>
+                    </div>
+
+                    <br><br>
+
+
+                    <h2 id="location">Geo Location</h2>
+                    <hr>
+                    <div id="map"></div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+
+<script>
+        document.getElementById('carousel-arrow-next').addEventListener('click',carouselSwipe,false);
+        document.getElementById('carousel-arrow-prev').addEventListener('click',carouselSwipe,false);
+
+        /**
+         * Switch header carousel to next image (swipe right)
+         */
+        function carouselSwipe() {
+
+            // Récupère les numéros de l'ancienne et la nouvelle image
+            var currentImg = document.getElementsByClassName('carousel-img-displayed')[0].id.substring(9);
+            var newImg = parseInt(currentImg);
+
+            // Gestion du début et de la fin de la liste d'images
+            if (this.id == 'carousel-arrow-next') {
+                newImg++;
+                if (newImg >= document.getElementsByClassName('carousel-img').length) {
+                    newImg = 0;
+                }
+            } else if (this.id == 'carousel-arrow-prev') {
+                newImg--;
+                if (newImg<0) {
+                    newImg = document.getElementsByClassName('carousel-img').length-1;
+                }
+            }
+
+            // Disparition progressive de l'ancienne image
+            document.getElementById('carousel-'+currentImg).className = 'carousel-img carousel-img-hidden';
+
+            // Apparition progressive de la nouvelle image
+            var displayedCarousel = document.getElementById('carousel-'+newImg);
+            displayedCarousel.className = 'carousel-img carousel-img-hidden';
+            setTimeout(function() {
+                displayedCarousel.className = 'carousel-img carousel-img-displayed';
+            },20);
+
+            // Disparition totale de l'ancienne image
+            setTimeout(function() {
+                document.getElementById('carousel-'+currentImg).className = 'carousel-img carousel-img-noDisplay';
+            },520);
+
+        }
+    </script>
+
+</body>
+</html>

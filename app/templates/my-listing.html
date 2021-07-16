@@ -1,0 +1,40 @@
+{% include './includes/header.html' %}
+{% load static %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .bg-side-bar{
+
+        background : rgb(153, 194, 255);
+
+    }
+
+    .form-section{
+
+        border:1px solid rgb(0,0,0,0.2);
+        border-radius:4px;
+        padding:15px;
+
+    }
+
+</style>
+
+<br>
+<div class="container">
+    <div class="row">
+        {% include './includes/user-sidebar.html' %}
+        <div class="col-md-8 d-flex justify-content-center" style="width:100%; height:500px; padding-top:100px; background:#efefef">
+
+            <div><h2>You don't have any listings yet!</h2></div>
+            <br>
+            <div>
+                <a href="{% url 'add-property' %}" class="btn btn-primary" style="height:50px;">Create One</a>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

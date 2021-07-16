@@ -1,0 +1,118 @@
+{% include "./includes/header.html" %}
+{% load static %}
+
+
+<div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-xs-12 col-sm-12 col-md-4 ">
+                <h1> Sign up!</h1>
+                <br>
+                <form action="" method="POST" class="form" role="form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <input class="form-control" name="firstname" placeholder="First Name" type="text"
+                                   required autofocus />
+                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            <input class="form-control" name="lastname" placeholder="Last Name" type="text" required />
+                        </div>
+                    </div>
+                    <br>
+                    <input class="form-control emailControl" name="email" placeholder="Your Email" type="email" />
+                    <br>
+                    <input class="form-control password1" name="password"  placeholder="New Password" type="password" />
+                    <br>
+                    <input class="form-control password2" name="password2"  placeholder="Re-enter Password" type="password" />
+                    <br>
+                    <input type="checkbox" required> <label>I accept the Terms and Conditions</label>
+                    <br>
+                    <button class="btn btn-lg btn-primary btn-block submit" type="submit" >
+
+                        Sign up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Email Already Exists!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Try Another Email
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+{% block javascript %}
+<script>
+    $(".emailControl").change(function () {
+       var email = $(this).val();
+
+      $.ajax({
+        url: '../validate_email/',
+        data: {
+          'email': email
+        },
+        dataType: 'json',
+        success: function (data) {
+          if (data.exists) {
+          	$("#exampleModalLongTitle").text("Email already exists")
+             $("#exampleModalCenter").modal('show');
+			$(".modal-body").text("Try another email!")
+			$(".password1").prop('disabled', true)
+			$(".password2").prop('disabled', true)
+			$(".submit").prop('disabled', true)
+          }else{
+			$(".password1").prop('disabled', false)
+			$(".password2").prop('disabled', false)
+          	$(".submit").prop('disabled', false)
+          }
+        }
+      });
+    });
+
+
+    $(".password2").change(function(){
+
+    	var password1 = $(".password1").val();
+    	var password2 = $(".password2").val();
+
+    	if(password1!=password2){
+    		$("#exampleModalLongTitle").text("Password did not match")
+    		$("#exampleModalCenter").modal('show');
+			$(".modal-body").text("Enter the same password")
+			$(".emailControl").prop('disabled', true)
+			$(".disable").prop('disabled', true)
+
+    	}else{
+			$(".emailControl").prop('disabled', false)
+			$(".disable").prop('disabled', false)
+    	}
+
+
+    });
+  </script>
+{% endblock %}
+
+
+</body>
+</html>

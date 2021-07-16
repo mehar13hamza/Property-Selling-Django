@@ -1,0 +1,106 @@
+{% include "./includes/header.html" %}
+{% load static %}
+<style>
+  #nav-search{
+    display: none;
+  }
+</style>
+
+<!-- Carousel with search bar code starts here -->
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+<div class="header">
+             <form action="{% url 'search-results' %}" method="POST" >
+                 {% csrf_token %}
+                 <h1>Home has never been more important</h1>
+                 <!-- <div class="form-box">
+                     <input type="text" class="search-business-field" placeholder="Enter an address, neighborhood, city, or ZIP code">
+                     <button class="search-btn" type="button"><i class="fa fa-search">Search</i></button>
+
+                 </div> -->
+                 <!-- <form action="" method="POST" class="form"> -->
+                   <div class="row" style="background: rgba(255, 255, 255, 0.377); padding: 20px;">
+                     <div class="col-md-6">
+                       <input type="text" class="form-control" name="search" id="city" placeholder="Enter an address, neighborhood, city, or ZIP code">
+                     </div>
+                     <div class="col-md-3">
+                      <select name="type" id="type" class="form-control">
+                        <option value="projects">Projects</option>
+                        <option value="sell">Sell</option>
+                        <option value="rent">Rent</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3">
+                      <button type="submit" name="submit" class="form-control btn btn-primary">SEARCH</button>
+                    </div>
+                   </div>
+                 </form>
+  </div>
+
+
+         
+  <!-- Section: Icon Boxes -->
+  <section class="section section-icons grey lighten-4 center" style="background-color: #f9f9fb;">
+    <div class="container">
+        <h4 style="color: black; text-align:center; padding: 40px 40px;">Have questions about buying, selling, or renting during COVID-19?</h4>
+      <div class="row" style="align: center;">
+        <div class="col-sm-12 col-md-4">
+          <div class="card">
+            <img src="{% static 'images/card-1.jpg' %}" style="width: 90%; height: 200px;" alt="">
+            <h4>About Us</h4>
+            <a href="{% url 'aboutus' %}" class="btn btn-primary">Read More</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="card">
+            <img src="{% static 'images/card-2.jpg' %}" style="width: 90%; height: 200px;" alt="">
+            <h4>Properties For Sale</h4>
+            <a href="{% url 'properties' type='sale' %}" class="btn btn-primary">Read More</a>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <div class="card">
+            <img src="{% static 'images/card-3.jpg' %}" style="width: 90%; height: 200px;" alt="">
+            <h4>Properties for Rent</h4>
+            <a href="{% url 'properties' type='rent' %}" class="btn btn-primary">Read More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<br>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Invalid Credentials</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Incorrect Email or Password
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if no_match %}
+<script>
+
+
+   $("#exampleModalCenter").modal('show');
+
+
+</script>
+
+{% endif %}
+    </body>
+</html>
+

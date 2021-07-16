@@ -1,0 +1,108 @@
+{% include "./includes/header.html" %}
+{% load static %}
+
+<style>
+
+    .heading{
+
+            text-align:center;
+            color:white;
+            background:rgba(0,0,0,.7);
+            height:100px;
+            padding-top:15px;
+            padding-bottom:15px;
+        }
+
+
+</style>
+
+
+<div class="heading">
+
+    <h1> Contact Us</h1>
+
+</div>
+
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 contact-form">
+            <form id="contact" method="POST" action="" class="form" role="form">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-xs-6 col-md-4 form-group">
+                        <input class="form-control" id="name" name="name" placeholder="Name" type="text" required autofocus />
+                    </div>
+                    <div class="col-xs-6 col-md-4 form-group">
+                        <input class="form-control" id="email" name="email" placeholder="Email" type="email" required />
+                    </div>
+                    <div class="col-xs-6 col-md-4 form-group">
+                        <input class="form-control" id="phone" name="phone" placeholder="Phone" type="text" required autofocus />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <input class="form-control" id="subject" name="subject" placeholder="subject" type="text" required autofocus />
+                    </div>
+                </div>
+
+                <textarea class="form-control" id="message" name="message" placeholder="Message" rows="5"></textarea>
+                <br />
+                <div class="row">
+                    <div class="col-xs-12 col-md-12 form-group">
+                        <button class="btn btn-primary pull-left" type="submit">Submit</button></form>
+        </div>
+    </div>
+    </form>
+</div>
+
+<div class="col-sm-4" style="text-align: center;" style="border: 1px solid rgb(0,0,0,0.1);">
+    <h3 style="border: 1px solid rgb(0,0,0,0.1); background: #efefef; padding: 10px;">Contact Details!</h3>
+    <img src="{% static 'images/logo.png' %}" style="margin-top: 30px; margin-bottom: 30px;" alt="">
+    <address>
+        <strong>260 Crandon Blvd
+            Key biscayne, Florida 33149
+            United States</strong><br><br>
+    </address>
+</div>
+
+</div>
+</div>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Submitted Successfully</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Your response has been submitted successfully!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% if message %}
+<script>
+
+
+   $("#exampleModalCenter").modal('show');
+
+
+</script>
+
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+{% include './includes/header.html' %}
+{% load static %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .bg-side-bar{
+
+        background : rgb(153, 194, 255);
+
+    }
+
+    .form-section{
+
+        border:1px solid rgb(0,0,0,0.2);
+        border-radius:4px;
+        padding:15px;
+
+    }
+
+    .package-header{
+
+        height:50px;
+        background:#efefef;
+        text-align:center;
+        font-size:20px;
+
+    }
+    .active-link{
+
+        background:#03b5c3;
+        color:white;
+
+    }
+
+    .inner-text{
+
+        margin-top:10px;
+
+    }
+
+    .whitesmoke{
+        color: #bdbdbd;
+    }
+
+    .package-list{
+
+        text-align:center;
+        border:1px solid #efefef;
+        padding-top:20px;
+        line-height:35px;
+
+    }
+
+    div h1{
+
+        color:#03b5c3;
+
+    }
+
+    .btn-primary{
+
+        color:white;
+        background-color:#03b5c3;
+        border:1px solid #03b5c3;
+        height:50px;
+        width:200px;
+        padding:10px;
+
+
+
+    }
+
+    .col-md-3{
+
+        margin-top:40px;
+    }
+
+</style>
+
+<br>
+<div class="row ">
+
+
+    <div class="col-md-4 package-header"><div class="inner-text">SELECT A PAYMENT</div></div>
+    <div class="col-md-4 package-header"><div class="inner-text">PAYMENT</div></div>
+    <div class="col-md-4 package-header active-link"><div class="inner-text">ACTIVE</div></div>
+
+</div>
+<br>
+
+
+<!--<div style="border:1px solid #efefef; padding-top:10px" class="d-flex justify-content-center">-->
+
+<!--    <h2 style="color:#27ae60;">Thanks For Your Purchase!</h2>-->
+<!--    <br>-->
+<!--    Order Details:-->
+<!--    <br>-->
+<!--    Package Name: {{order.package_id.title}}-->
+<!--    <br>-->
+<!--    Payment Method:{{order.method}}-->
+<!--    <br>-->
+<!--    Amount: {{order.package_id.price}}-->
+<!--    <br>-->
+<!--    User Email: {{order.user_id.email}}-->
+<!--    <br>-->
+<!--    Order #:{{order.id}}-->
+<!--    <br>-->
+<!--    <a class="btn btn primary">View Your Listings</a>-->
+
+
+
+<!--</div>-->
+<div class="conatiner">
+    <div style="text-align: center; padding: 20px;">
+        <h2 style="color:#27ae60;">Thanks for your purchase!</h2><br>
+        <h4>Order Details:</h4><br>
+        <h4><span class="whitesmoke">Package Name:</span> {{order.package_id.title}}</h4><br>
+        <h4><span class="whitesmoke">Payment Method:</span> {{order.method}}</h4><br>
+        <h4><span class="whitesmoke">Amount:</span>$ {{order.package_id.price}}</h4><br>
+        <h4><span class="whitesmoke">User email:</span> {{order.user_id.email}}</h4><br>
+        <h4><span class="whitesmoke">Order #:</span> {{order.id}}</h4><br>
+        <a href="{% url 'my-listing' %}" class="btn btn-primary">View Your Listings</a>
+    </div>
+</div>
+
+
+</body>
+</html>

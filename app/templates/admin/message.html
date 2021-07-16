@@ -1,0 +1,66 @@
+{% include "./includes/sidebar.html" %}
+{% load static %}
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid">
+            <h1 class="mt-4">Inbox</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">User Messages</li>
+            </ol>
+
+            <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-inbox mr-1"></i>User Messages</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xs-6 col-md-4 form-group">
+                            <input class="form-control" id="name" name="name" value="{{message.name}}" placeholder="Name" type="text" disabled autofocus />
+                        </div>
+                        <div class="col-xs-6 col-md-4 form-group">
+                            <input class="form-control" id="email" name="email" value="{{message.email}}" placeholder="Email" type="email" disabled />
+                        </div>
+                        <div class="col-xs-6 col-md-4 form-group">
+                            <input class="form-control" id="phone" name="phone" value="{{message.phone}}" placeholder="Phone" type="text" disabled autofocus />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <input class="form-control" id="subject" name="subject" value="{{message.subject}}"  placeholder="subject" type="text" disabled autofocus />
+                        </div>
+                    </div>
+
+                    <textarea class="form-control" id="message" name="message" placeholder="Message" rows="5" disabled>{{message.message}}</textarea>
+                    <br />
+                    <div class="row">
+                        <div class="col-xs-12 col-md-12 form-group">
+                            <a class="btn btn-success pull-left" href="{% url 'adminInbox' %}">Go Back</a></form>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Invexterra 2020</div>
+
+            </div>
+        </div>
+    </footer>
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/js/scripts.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'dist/assets/demo/chart-bar-demo.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/datatables-demo.js' %}"></script>
+</body>
+</html>

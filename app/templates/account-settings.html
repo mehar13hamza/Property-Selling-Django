@@ -1,0 +1,166 @@
+{% include './includes/header.html' %}
+{% load static %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .bg-side-bar{
+
+        background : rgb(153, 194, 255);
+
+    }
+
+    .form-section{
+
+        border:1px solid rgb(0,0,0,0.2);
+        border-radius:4px;
+        padding:15px;
+
+    }
+
+</style>
+
+<br>
+<div class="container">
+    <div class="row">
+        {% include './includes/user-sidebar.html' %}
+        <div class="col-md-8 form-section">
+
+            <form action = "" method="POST">
+                {% csrf_token %}
+                <h3>Name</h3>
+                <div class="form-group">
+                    <label for="exampleInputEmail">Username</label>
+                    <input type="text" name="username" class="form-control" value = "{{user.username}}" id="exampleInputEmail" disabled required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">First Name</label>
+                    <input type="text" name="firstname" class="form-control" value = "{{user.first_name}}"  id="exampleInputEmail1"  required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail2">Last Name</label>
+                    <input type="text" name="lastname" class="form-control" value = "{{user.last_name}}" id="exampleInputEmail2"  required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail3">NickName</label>
+                    <input type="text" name="nickname" class="form-control" value = "{{user.username}}" id="exampleInputEmail3"  required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail4">Display to public as</label>
+                    <input type="text" name="public" class="form-control" value = "{{user.first_name}} {{user.last_name}}" id="exampleInputEmail4"  disabled>
+                </div>
+
+                <hr>
+                <h3>Contact Info</h3>
+
+
+                <div class="form-group">
+                    <label for="exampleInputEmail5">Email</label>
+                    <input type="email" name="email" class="form-control" value = "{{user.email}}" id="exampleInputEmail5" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleInputEmail6">website</label>
+                    <input type="email" name="website" class="form-control" value = "{{profile.website}}"  id="exampleInputEmail6">
+                </div>
+                <hr>
+
+                <h3>About Yourself</h3>
+
+
+                <div class="form-group">
+                    <label>Biographical Information</label>
+                    <textarea name = "bioInfo" class="form-control" rows="4">{{profile.bioInfo}}</textarea>
+
+                </div>
+
+                <div class="form-group">
+                    <label>Mobile No.</label>
+                    <input type="text"  name = "mobile" class="form-control" value="{{profile.mobile}}">
+                </div>
+
+                <hr>
+
+                <button type="submit" class="btn btn-primary">Update Profile</button>
+
+
+                </form>
+                <hr>
+                <h3>Change Password</h3>
+                <div class="form-group">
+
+                    <form action="{% url 'change-password' %}" method="POST">
+                        {% csrf_token %}
+                        <input class="form-control password1" name="password"  placeholder="New Password" type="password" required />
+                            <br>
+                        <input class="form-control password2" name="password2"  placeholder="Re-enter Password" type="password" required />
+                            <br>
+                        <button type="submit" class="btn btn-primary disable">Change Password</button>
+                    </form>
+                </div>
+
+
+
+
+
+
+        </div>
+
+    </div>
+    <br>
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Email Already Exists!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Try Another Email
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+
+
+{% block javascript %}
+<script>
+
+    $(".password2").change(function(){
+
+    	var password1 = $(".password1").val();
+    	var password2 = $(".password2").val();
+
+    	if(password1!=password2){
+    		$("#exampleModalLongTitle").text("Password did not match")
+    		$("#exampleModalCenter").modal('show');
+			$(".modal-body").text("Enter the same password")
+			$(".emailControl").prop('disabled', true)
+			$(".disable").prop('disabled', true)
+
+    	}else{
+			$(".emailControl").prop('disabled', false)
+			$(".disable").prop('disabled', false)
+    	}
+
+
+    });
+  </script>
+{% endblock %}
+
+
+
+</body>
+</html>

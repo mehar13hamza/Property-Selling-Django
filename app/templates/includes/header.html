@@ -1,0 +1,327 @@
+<html>
+<head>
+    <title>Home</title>
+    {% load static %}
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Lobster+Two|Raleway|Oswald:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+<section class="back">
+    <div class="container border back">
+        <div class="row back">
+            <div class="col-sm-6 col-xs-12">
+                        <span class="text-white">
+                            <i class="fa fa-facebook"></i>
+                        </span>
+
+                <span class="text-white">
+                            <i class="fa fa-twitter"></i>
+                        </span>
+
+                <span class="text-white border-right" style="padding-right: 10px;">
+                            <i class="fa fa-youtube"></i>
+                        </span>
+
+                <span class="text-white">
+                            contact@flex-home.com
+                        </span>
+            </div>
+            <div class="col-sm-6 col-xs-12" style="text-align: right;">
+                {% if request.session.logged_in %}
+
+
+                {% else %}
+                <span class="text-white">
+                            <button data-toggle="modal" data-target="#mymodal" style="border:none; background:transparent; color:white;">
+
+                            <i class="fa fa-sign-in"></i>
+                            Login
+                            </button>
+                        </span>
+                <span class="text-white">
+
+                            <a href = "{% url 'signup' %}" class="text-white">
+                            <i class="fa fa-user"></i>
+                            Register
+                            </a>
+                        </span>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="navbar-bg">
+    <div class="container">
+        <nav class="navbar navbar-expand-sm">
+            <!-- Brand -->
+            <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/logo.png' %}" alt=""></a>
+            <!-- Links -->
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapseableNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="collapseableNavbar" style="text-align: center;">
+                <ul class="navbar-nav ml-auto" >
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'agents' %}">Agents</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'aboutus' %}">About Us</a>
+                    </li>
+                    {% if request.session.logged_in %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                            <img height="30" width="30" src = "{% static 'images/user.png' %}">
+                            {{request.session.logged_in.username}}
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Favourite Listing</a>
+                            <hr>
+                            <a class="dropdown-item" href="{% url 'listing-emails' %}">Listing Email Alerts</a>
+                            <hr>
+                            <a class="dropdown-item" href="{% url 'account-settings' %}">Account Settings</a>
+                            <hr>
+                            <a class="dropdown-item" href="{% url 'logout' %}">logout</a>
+                        </div>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a href="{% url 'add-property'  %}" class="btn" id="navbtn"><i class="fa fa-plus-circle"></i> Add Property</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</section>
+
+<div class="modal fade" id="mymodal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="lineModalLabel">Sign In</h3>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+
+            </div>
+            <div class="modal-body">
+
+                <!-- content goes here -->
+                <form action = "{% url 'home' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleInputEmail">Email</label>
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail" placeholder="Enter Email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Password</label>
+                        <input type="password" name="password" class="form-control" id="exampleInputEmail1" placeholder="Enter password" required minlength="9">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href = "{% url 'signup' %}"  class="btn btn-success">Create an Account</a>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<div class="container-fluid" id="nav-search" style="background: #cccccc; padding-left: 40px; padding-right: 40px; padding-bottom: 10px;">
+    <form action="{% url 'header-search' %}" method="POST" class="form" role="form">
+        {% csrf_token %}
+        <div class="row" style="padding-top: 20px;">
+            <div class="col-md-3 col-xs-12 form-group">
+                <input type="text" class="form-control" name="address" placeholder="Street, City, State, Zip or Keyword">
+            </div>
+            <div class="col-md-2 col-xs-12 form-group">
+                <select name="type" class="form-control">
+                    <option name="all" id="all">
+                        All Property types
+                    </option>
+                    <option name="apartment" id="apartment">
+                        Apartment
+                    </option>
+                    <option name="commercial" id="commercial">
+                        Commercial
+                    </option>
+                    <option name="condo" id="condo">
+                        Condo/townhouse
+                    </option>
+                    <option name="family" id="family">
+                        Single Family House
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2 col-xs-12 form-group">
+                <select name="state" class="form-control">
+                    <option name="all" id="all">
+                        All States
+                    </option>
+                    <option name="florida" id="florida">
+                        Florida
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2 col-xs-12 form-group">
+                <select name="city" class="form-control">
+                    <option name="all" id="all">
+                        All Cities
+                    </option>
+                    <option name="doral" id="doral">
+                        Doral
+                    </option>
+                    <option name="miaimi" id="miami">
+                        Miaimi
+                    </option>
+                    <option name="pembroke" id="pembroke">
+                        Pembroke Pines
+                    </option>
+                </select>
+            </div>
+            <div class="col-md-2 col-xs-12 form-group">
+                <button type="submit" class="btn btn-primary" style="width: 100%;">SEARCH</button>
+            </div>
+            <div class="col-md-1 col-xs-12 form-group">
+                <div onclick="myFunction2()" class="bg-dark text-white" style="width: 100%; height: 40px; align-content: center; border-radius: 5px; text-align: center;">More</div>
+            </div>
+        </div>
+        <hr>
+        <div id="myId" style="display: none;">
+            <div class="row">
+                <div class="col-md-3 col-xs-12 form-group">
+                    <select name="country" class="form-control">
+                        <option name="all" id="all">
+                            All Countries
+                        </option>
+                        <option name="us" id="usa">
+                            United States
+                        </option>
+                        <option name="usa" id="usa">
+                            USA
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <select name="type" class="form-control">
+                        <option name="all" id="all">
+                            All Property types
+                        </option>
+                        <option name="apartment" id="apartment">
+                            Apartment
+                        </option>
+                        <option name="commercial" id="commercial">
+                            Commercial
+                        </option>
+                        <option name="condo" id="condo">
+                            Condo/townhouse
+                        </option>
+                        <option name="family" id="family">
+                            Single Family House
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <select name="bed" class="form-control">
+                        <option name="bed" id="all">
+                            bed
+                        </option>
+                        <option value="1" name="1" id="all">
+                            1
+                        </option>
+
+                        <option value="2" name="2" id="two">
+                            2
+                        </option>
+                        <option value="3" name="3" id="three">
+                            3
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <select name="bath" class="form-control">
+                        <option name="bath" id="bath">
+                            Bath
+                        </option>
+                        <option value="1" name="one" id="one">
+                            1
+                        </option>
+                        <option value="2" name="two" id="two">
+                            2
+                        </option>
+                        <option value="3" name="three" id="three">
+                            3
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-xs-12 form-group">
+                    <input type="number" min="0" class="form-control" name="price-from" placeholder="$ Price From">
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <input type="number" min="0" class="form-control" name="price-to" placeholder="$ Price To">
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <input type="text" class="form-control" name="size" placeholder="Size to Area">
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <input type="text" class="form-control" name="keyword" placeholder="Keyword">
+                </div>
+            </div>
+            <div class="row" style="padding-left: 20px; background: white; border-radius: 5px;">
+                <div class="col-md-12">
+                    <h5>ADDITIONAL FEATURES</h5>
+                    <hr style="color: red; background: black;">
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <input type="checkbox" name="schools" id="schools" value="a+ Schools">
+                    <label for="schools">a+ Schools</label>
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <input type="checkbox" name="park">
+                    <label for="park">Aquatic Parks</label>
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <input type="checkbox" name="basketball">
+                    <label for="basketball">Basketball Court</label>
+                </div>
+                <div class="col-md-3 col-xs-12 form-group">
+                    <input type="checkbox" name="biliard">
+                    <label for="biliard">Biliard Room</label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+         function myFunction2() {
+           var x = document.getElementById("myId");
+           if (x.style.display === "none") {
+             x.style.display = "block";
+           } else {
+             x.style.display = "none";
+           }
+         }
+         </script>
+

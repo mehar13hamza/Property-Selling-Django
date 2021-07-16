@@ -1,0 +1,64 @@
+<div class="col-md-4">
+    <div class="card text-white bg-side-bar">
+        <div class="card-body">
+            <a href = "" style="color:white"><i class = "fa fa-heart"></i> Favourite Listings </a>
+        </div>
+        <hr>
+        <div class="card-body">
+            <a href = "{% url 'listing-emails' %}" style="color:white"><i class = "fa fa-exclamation"></i> Listing Email Alerts </a>
+        </div>
+        <hr>
+        <div class="card-body">
+            <a href = "{% url 'account-settings' %}" style="color:white"><i class = "fa fa-user"></i> Account Settings </a>
+        </div>
+        <hr>
+        <div class="card-body">
+            <a href = "{% url 'logout' %}" style="color:white"><i class = "fa fa-sign-out"></i> Logout </a>
+        </div>
+
+    </div>
+    <br>
+    <div class="card" style="height:350px;">
+        <div class="card-header" style="color:black">
+            Mortgage Calculator
+        </div>
+        <div class="card-body">
+
+                <input type="number" name="price" class="form-control" id="myInput1" placeholder="Sale Price (no separator)" min="0" required>
+                <input type="number" name="interest" class="form-control" id="myInput2" placeholder="Interest rate" min="0" max="100" required>
+                <select  name="years" class="form-control" id="myInput3"  required>
+                    <option selected>15 years</option>
+                    <option>25 years</option>
+                    <option>35 years</option>
+                </select>
+
+                <button class = "btn btn-success" id="myBtn">Calculate</button>
+            <hr>
+            <p>Monthly Payment: $ <span id="payment"> </span></p>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+        // Get value on button click and show alert
+        $("#myBtn").click(function(){
+            var input1 = parseFloat($("#myInput1").val());
+            var input2 = parseFloat($("#myInput2").val());
+            var input3 = $("#myInput3").val();
+            input3 = parseFloat(input3.replace(/ .*/,''));
+
+            var temp = (1 - Math.pow((1 + (input2/100/12)), (-input3*12)));
+            var payment = parseInt(((input2/100/12) * input1)/temp);
+
+            $("#payment").text(payment)
+
+
+        });
+    });
+
+</script>

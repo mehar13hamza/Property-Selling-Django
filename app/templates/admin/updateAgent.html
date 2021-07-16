@@ -1,0 +1,93 @@
+{% include "./includes/sidebar.html" %}
+{% load static %}
+
+<div id="layoutSidenav_content">
+    <main>
+
+        <div class="container-fluid">
+            <h1 class="mt-4">Agent Management</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Add Agent</li>
+            </ol>
+
+            <div class="card mb-4">
+                <div class="card-header"><i class="fas fa-user mr-1"></i>Enter Agent Details</div>
+                <div class="card-body">
+
+                    <form method = "POST" action = "" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group"><label class="small mb-1" for="inputfirst_name">Username</label><input class="form-control py-4" name = "username" id="inputfirst_name" value = "{{agent.username}}" type="text" placeholder="Enter Username" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="inputlast_name">Agent Id</label><input class="form-control py-4" name = "agentId" id="inputlast_name" value = "{{agent.agentId}}" type="text" placeholder="Enter Agent Id" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="inputDOB">Phone</label><input class="form-control py-4" name = "phone" id="inputDOB" type="text" value = "{{agent.phone}}" placeholder="Enter Phone No." required /></div>
+                        <div class="form-group"><label class="small mb-1" for="address">Address</label><textarea class="form-control py-4" rows="5" name = "address" id="address" placeholder="Enter Address" required>{{agent.address}}</textarea></div>
+                        <div class="form-group"><label class="small mb-1" for="inputEmailAddress">Email Address</label><input class="form-control py-4" name = "email" value = "{{agent.email}}" id="inputEmailAddress" type="email" placeholder="Enter Email" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="website">Company</label><input class="form-control py-4" name = "company" id="company" type="text" placeholder="Enter Company Name" value="{{agent.company}}" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="website">Website</label><input class="form-control py-4" name = "website" id="website" value = "{{agent.website}}" type="text" placeholder="Enter Website" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="facebook">Facebook</label><input class="form-control py-4" name = "facebook" id="facebook" value = "{{agent.facebook}}" type="text" placeholder="Enter Facebook Link" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="twitter">Twitter</label><input class="form-control py-4" name = "twitter" id="twitter" value = "{{agent.twitter}}" type="text" placeholder="Enter Twitter Link" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Instagram</label><input class="form-control py-4" name = "instagram" id="instagram" value = "{{agent.instagram}}" type="text" placeholder="Enter Instagram Link" required /></div>
+                        <div class="form-group"><label class="small mb-1" for="instagram">Add Photo</label><input class="form-control" name = "photo"  type="file"  placeholder="Enter Email" /></div>
+                        <div class="form-group d-flex align-items-center mt-4 mb-0"><button class="btn btn-success">Update Agent</button></div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="py-4 bg-light mt-auto">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Invexterra 2020</div>
+
+            </div>
+        </div>
+    </footer>
+</div>
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Submitted Successfully</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Your response has been submitted successfully!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/js/scripts.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'dist/assets/demo/chart-bar-demo.js' %}"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+<script src="{% static 'dist/assets/demo/datatables-demo.js' %}"></script>
+
+{% if message %}
+<script>
+
+
+   $("#exampleModalCenter").modal('show');
+
+
+</script>
+
+{% endif %}
+
+
+</body>
+</html>

@@ -1,0 +1,98 @@
+{% include './includes/header.html' %}
+{% load static %}
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .bg-side-bar{
+
+        background : rgb(153, 194, 255);
+
+    }
+
+    .form-section{
+
+        border:1px solid rgb(0,0,0,0.2);
+        border-radius:4px;
+        padding:15px;
+
+    }
+
+    .package-header{
+
+        height:50px;
+        background:#efefef;
+        text-align:center;
+        font-size:20px;
+
+    }
+    .active-link{
+
+        background:#03b5c3;
+        color:white;
+
+    }
+
+    .inner-text{
+
+        margin-top:10px;
+
+    }
+
+
+    .package-list{
+
+        text-align:center;
+        border:1px solid #efefef;
+        padding-top:20px;
+        line-height:35px;
+
+    }
+
+    div h1{
+
+        color:#03b5c3;
+
+    }
+
+    .btn-primary{
+
+        color:white;
+        background-color:#03b5c3;
+        border:1px solid #03b5c3;
+        height:50px;
+        width:200px;
+        padding:10px;
+
+
+
+    }
+
+    .col-md-3{
+
+        margin-top:40px;
+    }
+
+</style>
+
+<br>
+<div class="row ">
+
+
+    <div class="col-md-4 package-header active-link"><div class="inner-text">SELECT A PAYMENT</div></div>
+    <div class="col-md-4 package-header"><div class="inner-text">PAYMENT</div></div>
+    <div class="col-md-4 package-header"><div class="inner-text">ACTIVE</div></div>
+
+</div>
+<br>
+
+
+<div class="row">
+
+
+    {% for p in packages %}
+    <div class="col-md-3 package-list"><h2>{{p.title}}</h2><br> <div><h1>${{p.price}}</h1></div><br><div>{{p.months}} Months</div><hr><div>{{p.listing}} Listings</div><hr><div>{{p.featured_listings}} Featured Listings</div><hr><div><form action="{% url 'checkout' %}" method="POST">{% csrf_token %}<input type="hidden" name="price" value={{p.id}}><button type="submit" class="btn btn-primary">Get Started ${{p.price}}</button></form></div><br></div>
+    {% endfor %}
+
+</div>
+</body>
+</html>
